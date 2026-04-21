@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>💰 Finanzas</h2>
+
+        <ul>
+            <li>📊 Dashboard</li>
+            <li>💳 Mis Deudas</li>
+            <li>👤 Perfil</li>
+            <li><a href="/logout">🚪 Salir</a></li>
+        </ul>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="main">
+
+        <!-- HEADER -->
+        <div class="topbar">
+            <h2>Dashboard Financiero</h2>
+            <a href="/nueva_deuda" class="btn">+ Nueva obligación</a>
+        </div>
+
+        <!-- CARDS -->
+        <div class="cards">
+
+            <div class="card">
+                <h4>Total Adeudado</h4>
+                <p>$ {{ total }}</p>
+            </div>
+
+            <div class="card">
+                <h4>Deudas activas</h4>
+                <p>{{ deudas|length }}</p>
+            </div>
+
+            <div class="card">
+                <h4>Interés promedio</h4>
+                <p>
+                    {% if deudas|length > 0 %}
+                        {{ (deudas | map(attribute='interes') | sum / deudas|length) | round(2) }}%
+                    {% else %}
+                        0%
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="card">
+                <h4>Próximo pago</h4>
+                <p>
+                    {% if deudas|length > 0 %}
+                        {{ deudas[0].fecha_pago }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+            </div>
+
+        </div>
+
+        <!-- CONTENIDO GRID -->
+        <div class="grid">
+
+            <!-- GRÁFICA -->
+            <div class="box">
+                <h3>Distribución de deudas</h3>
+                <canvas id="grafico"></canvas>
+            </div>
+
+            <!-- PERFIL -->
+            <div class="box">
+                <h3>Perfil</h3>
+                <p><strong>Usuario:</strong> {{ current_user.username }}</p>
+                <p><strong>Estado:</strong> Activo</p>
+                <p><strong>Total de obligaciones:</strong> {{ deudas|length }}</p>
+            </div>
+
+        </div>
+
+        <!-- TABLA -->
+        <div class="table-box">
+            <h3>Detalle de deudas</h3>
+
+            <table>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Saldo</th>
+                    <th>Interés</th>
+                    <th>Fecha</th>
+                </tr>
+
+                {% for d in deudas %}
+                <tr>
+                    <td>{{ d.nombre }}</td>
+                    <td>$ {{ d.saldo }}</td>
+                    <td>{{ d.interes }}%</td>
+                    <td>{{ d.fecha_pago }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- DATOS -->
+<script id="data" type="application/json">
+{
+    "nombres": {{ deudas | map(attribute='nombre') | list | tojson }},
+    "valores": {{ deudas | map(attribute='saldo') | list | tojson }}
+}
+</script>
+
+<script>
+const data = JSON.parse(document.getElementById("data").textContent);
+
+new Chart(document.getElementById('grafico'), {
+    type: 'doughnut',
+    data: {
+        labels: data.nombres,
+        datasets: [{
+            data: data.valores
+        }]
+    }
+});
+</script>
+
+</body>
+</html>
