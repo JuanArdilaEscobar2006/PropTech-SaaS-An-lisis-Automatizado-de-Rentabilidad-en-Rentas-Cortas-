@@ -1,0 +1,99 @@
+/* RESET */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+}
+
+/* CONTENEDOR */
+.form-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* TARJETA */
+.form-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0px 15px 40px rgba(0,0,0,0.2);
+}
+
+/* LOGO */
+.logo {
+    background: #1e3c72;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    margin: 0 auto 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+/* TEXTOS */
+h2 {
+    margin: 10px 0;
+    color: #1e3c72;
+}
+
+p {
+    color: #777;
+    font-size: 14px;
+}
+
+/* INPUTS */
+.input-group {
+    display: flex;
+    align-items: center;
+    background: #f4f6f9;
+    border-radius: 10px;
+    padding: 12px;
+    margin: 12px 0;
+}
+
+.input-group i {
+    margin-right: 10px;
+    color: #1e3c72;
+}
+
+.input-group input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* BOTÓN */
+button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.03);
+}
+
+/* LINK */
+.form-card a {
+    display: block;
+    margin-top: 15px;
+    color: #1e3c72;
+    text-decoration: none;
+    font-weight: 500;
+}
